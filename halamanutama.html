@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <!-- Mengoptimumkan saiz skrin untuk telefon bimbit -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MLBB Match Recorder</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-gradient: radial-gradient(circle at center, #101626 0%, #070913 100%);
+            --card-bg: rgba(19, 26, 43, 0.85);
+            --gold-glow: #d4af37;
+            --gold-dark: #aa841c;
+            --victory-blue: #00ccff;
+            --defeat-red: #ff3333;
+            --text-light: #e2e8f0;
+            --input-bg: #0d1322;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-light);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px; /* Padding optimum untuk telefon bimbit */
+            overflow-x: hidden;
+        }
+
+        /* [ANIMASI 1] - Form Container Fade In Asal (0.6s & 20px) */
+        .form-container {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            width: 100%;
+            max-width: 450px;
+            padding: 40px 25px;
+            border-radius: 16px;
+            border: 2px solid var(--gold-dark);
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.15), 
+                        inset 0 0 15px rgba(212, 175, 55, 0.05);
+            position: relative;
+            animation: fadeIn 0.6s ease-out; /* Mengekalkan kelajuan asal */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Penjuru UI MLBB */
+        .form-container::before {
+            content: ''; position: absolute; top: -2px; left: -2px; width: 20px; height: 20px;
+            border-top: 3px solid var(--gold-glow); border-left: 3px solid var(--gold-glow);
+            border-top-left-radius: 16px;
+        }
+        .form-container::after {
+            content: ''; position: absolute; bottom: -2px; right: -2px; width: 20px; height: 20px;
+            border-bottom: 3px solid var(--gold-glow); border-right: 3px solid var(--gold-glow);
+            border-bottom-right-radius: 16px;
+        }
+
+        h2 {
+            font-family: 'Orbitron', sans-serif;
+            text-align: center;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: transparent;
+            background: linear-gradient(180deg, #fff 30%, var(--gold-glow) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 30px;
+            filter: drop-shadow(0 2px 8px rgba(212, 175, 55, 0.3));
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 10px;
+            color: #94a3b8;
+            font-weight: 600;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 16px;
+            background: var(--input-bg);
+            border: 1px solid #1e293b;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 16px; /* Mengekalkan 16px supaya iPhone tidak auto-zoom */
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--gold-glow);
+            box-shadow: 0 0 12px rgba(212, 175, 55, 0.3);
+            background: #111a30;
+        }
+
+        .outcome-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        /* [ANIMASI 2] - Kesan Hover Dan Klik Pada Kad Keputusan */
+        .outcome-card {
+            background: var(--input-bg);
+            border: 2px solid #1e293b;
+            border-radius: 10px;
+            padding: 18px 10px;
+            text-align: center;
+            cursor: pointer;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 14px;
+            letter-spacing: 1px;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            opacity: 0.6;
+        }
+
+        /* Mengekalkan kesan hover apabila dibuka di PC/Laptop */
+        .outcome-card:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+
+        .outcome-card.victory:hover, .outcome-card.victory.active {
+            border-color: var(--victory-blue);
+            color: var(--victory-blue);
+            box-shadow: 0 0 15px rgba(0, 204, 255, 0.4);
+            opacity: 1;
+        }
+
+        .outcome-card.defeat:hover, .outcome-card.defeat.active {
+            border-color: var(--defeat-red);
+            color: var(--defeat-red);
+            box-shadow: 0 0 15px rgba(255, 51, 51, 0.4);
+            opacity: 1;
+        }
+
+        /* [ANIMASI 3] - Animasi Ombak Kecerunan (Gradient Wave) Pada Butang */
+        button {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, var(--gold-dark) 0%, var(--gold-glow) 50%, var(--gold-dark) 100%);
+            background-size: 200% auto; /* Saiz kecerunan dikekalkan untuk animasi pergerakan */
+            color: #05070b;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.4s ease; /* Transisi asal dikekalkan */
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.25);
+            text-transform: uppercase;
+            margin-top: 10px;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Pergerakan kecerunan semasa di-hover atau ditekan di mobile */
+        button:hover, button:active {
+            background-position: right center;
+            box-shadow: 0 4px 25px rgba(212, 175, 55, 0.45);
+            transform: translateY(-1px);
+        }
+
+        button:active {
+            transform: scale(0.98) translateY(1px); /* Kesan maklum balas fizikal bila ditekan di telefon */
+        }
+
+        button:disabled {
+            background: #334155;
+            color: #64748b;
+            box-shadow: none;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .message {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 10px;
+            border-radius: 6px;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .success { background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px solid #10b981; }
+        .error { background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid #ef4444; }
+
+        /* Media Query untuk memastikan keserasian telefon bimbit yang sangat kecil */
+        @media (max-width: 400px) {
+            .form-container { padding: 30px 20px; }
+            h2 { font-size: 22px; }
+            button, input[type="text"] { padding: 14px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <h2>Match Report</h2>
+        <form id="mlbbForm">
+            <div class="form-group">
+                <label for="namaPasukan">Nama Pasukan</label>
+                <input type="text" id="namaPasukan" name="namaPasukan" required placeholder="Masukkan nama skuad..." autocomplete="off">
+            </div>
+
+            <div class="form-group">
+                <label>Keputusan Perlawanan</label>
+                <div class="outcome-container">
+                    <div class="outcome-card victory" data-value="Menang">VICTORY</div>
+                    <div class="outcome-card defeat" data-value="Kalah">DEFEAT</div>
+                </div>
+                <input type="hidden" id="keputusan" name="keputusan" required>
+            </div>
+
+            <button type="submit" id="submitBtn">Submit Result</button>
+            <div id="statusMessage" class="message"></div>
+        </form>
+    </div>
+
+    <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbxIK04zrfeq7VEb0dRVw0FgWgwPRgZhrqzKIntrCSS3tCOoXzunPaky3bbKwsYXRLj3rA/exec'; 
+        
+        const form = document.getElementById('mlbbForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const statusMessage = document.getElementById('statusMessage');
+        const keputusanInput = document.getElementById('keputusan');
+        const cards = document.querySelectorAll('.outcome-card');
+
+        // Logik klik kad keputusan
+        cards.forEach(card => {
+            card.addEventListener('click', () => {
+                cards.forEach(c => c.classList.remove('active'));
+                card.classList.add('active');
+                keputusanInput.value = card.getAttribute('data-value');
+                
+                // Kesan getaran haptic singkat untuk Android
+                if (navigator.vibrate) navigator.vibrate(40);
+            });
+        });
+
+        // Logik hantar borang
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            
+            if (!keputusanInput.value) {
+                statusMessage.textContent = 'Sila pilih VICTORY atau DEFEAT terlebih dahulu!';
+                statusMessage.className = 'message error';
+                statusMessage.style.display = 'block';
+                return;
+            }
+            
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'TRANSMITTING DATA...';
+            statusMessage.style.display = 'none';
+
+            let requestBody = new FormData(form);
+
+            fetch(scriptURL, { method: 'POST', body: requestBody })
+                .then(response => {
+                    statusMessage.textContent = 'DATA BERJAYA DISIMPAN, SEMOGA BERJAYA!';
+                    statusMessage.className = 'message success';
+                    statusMessage.style.display = 'block';
+                    
+                    form.reset(); 
+                    cards.forEach(c => c.classList.remove('active'));
+                    keputusanInput.value = '';
+                    
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Submit Result';
+                })
+                .catch(error => {
+                    statusMessage.textContent = 'RALAT SAMBUNGAN. SILA CUBA LAGI.';
+                    statusMessage.className = 'message error';
+                    statusMessage.style.display = 'block';
+                    
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Submit Result';
+                });
+        });
+    </script>
+</body>
+</html>
