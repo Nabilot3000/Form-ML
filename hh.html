@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Legends Tournament Bracket</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0b0e14;
+            color: #ffffff;
+            padding: 40px 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* --- BAHAGIAN ADMIN HEADER --- */
+        .header-container {
+            width: 100%;
+            max-width: 1400px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .title-area h1 {
+            color: #f3a91b;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(243, 169, 27, 0.5);
+            margin-bottom: 5px;
+        }
+
+        .title-area p {
+            color: #8a99ad;
+            font-size: 14px;
+        }
+
+        .admin-btn {
+            background-color: #1f293d;
+            color: white;
+            border: 2px solid #233048;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .admin-btn:hover {
+            background-color: #f3a91b;
+            color: #0b0e14;
+            border-color: #f3a91b;
+        }
+
+        .admin-mode-active {
+            background-color: #e74c3c !important;
+            border-color: #c0392b !important;
+            color: white !important;
+        }
+        /* --------------------------- */
+
+        .bracket-container {
+            display: flex;
+            gap: 40px;
+            overflow-x: auto;
+            padding: 20px 0;
+            width: 100%;
+            max-width: 1400px;
+            justify-content: flex-start;
+        }
+
+        .round {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            min-width: 220px;
+        }
+
+        .round-title {
+            text-align: center;
+            color: #f3a91b;
+            font-weight: bold;
+            font-size: 14px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+            border-bottom: 2px solid #1f293d;
+            padding-bottom: 5px;
+        }
+
+        .matchups {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            height: 100%;
+            justify-content: space-around;
+        }
+
+        .match {
+            background-color: #131926;
+            border: 1px solid #233048;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+        }
+
+        .match:hover {
+            border-color: #4a5c78;
+        }
+
+        .team {
+            padding: 12px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.2s;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .team:hover {
+            background-color: #1f293d;
+        }
+
+        .team:first-child {
+            border-bottom: 1px solid #1f293d;
+        }
+
+        .team.winner {
+            color: #00ff88;
+            background-color: rgba(0, 255, 136, 0.05);
+            font-weight: bold;
+        }
+
+        .team.loser {
+            color: #63758a;
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+
+        .champion-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .trophy {
+            font-size: 50px;
+            margin-bottom: 10px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .champion-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ffd700;
+            padding: 10px 20px;
+            border: 2px dashed #ffd700;
+            border-radius: 8px;
+            background: rgba(255, 215, 0, 0.05);
+            min-width: 180px;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-container">
+        <div class="title-area">
+            <h1>MLBB Tournament Bracket</h1>
+            <p id="status-text">Status: Mod Penonton (Hanya boleh melihat)</p>
+        </div>
+        <button class="admin-btn" id="adminBtn" onclick="toggleAdmin()">Login Admin</button>
+    </div>
+
+    <div class="bracket-container">
+        
+        <div class="round">
+            <div class="round-title">Round of 16</div>
+            <div class="matchups">
+                <div class="match">
+                    <div class="team" data-round="0" data-match="0" data-slot="0" onclick="advanceTeam(this)">Selangor Red Giants</div>
+                    <div class="team" data-round="0" data-match="0" data-slot="1" onclick="advanceTeam(this)">Evos Glory</div>
+                </div>
+                <div class="match">
+                    <div class="team" data-round="0" data-match="1" data-slot="0" onclick="advanceTeam(this)">Fnatic ONIC</div>
+                    <div class="team" data-round="0" data-match="1" data-slot="1" onclick="advanceTeam(this)">Team Flash</div>
+                </div>
+                <div class="match">
+                    <div class="team" data-round="0" data-match="2" data-slot="0" onclick="advanceTeam(this)">AP.Bren</div>
+                    <div class="team" data-round="0" data-match="2" data-slot="1" onclick="advanceTeam(this)">See You Soon</div>
+                </div>
+                <div class="match">
+                    <div class="team" data-round="0" data-match="3" data-slot="0" onclick="advanceTeam(this)">RRQ Hoshi</div>
+                    <div class="team" data-round="0" data-match="3" data-slot="1" onclick="advanceTeam(this)">Todak</div>
+                </div>
+                <div class="match">
+                    <div class="team" data-round="0" data-match="4" data-slot="0" onclick="advanceTeam(this)">Team Liquid ID</div>
+                    <div class="team" data-round="0" data-match="4" data-slot="1" onclick="advanceTeam(this)">HomeBois</div>
+                </div>
+                <div class="match">
+                    <div class="team" data-round="0" data-match="5" data-slot="0" onclick="advanceTeam(this)">Falcon Esports</div>
+                    <div class="team" data-round="0" data-match="5" data-slot="1" onclick="advanceTeam(this)">Bigetron Alpha</div>
+                </div>
+                <div class="match">
+                    <div class="team" data-round="0" data-match="6" data-slot="0" onclick="advanceTeam(this)">Geek Fam</div>
+                    <div class="team" data-round="0" data-match="6" data-slot="1" onclick="advanceTeam(this)">Blacklist Int.</div>
+                </div>
+                <div class="match">
+                    <div class="team" data-round="0" data-match="7" data-slot="0" onclick="advanceTeam(this)">RSG PH</div>
+                    <div class="team" data-round="0" data-match="7" data-slot="1" onclick="advanceTeam(this)">Rebellion Zion</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="round">
+            <div class="round-title">Quarterfinals</div>
+            <div class="matchups">
+                <div class="match"><div class="team" data-round="1" data-match="0" data-slot="0" onclick="advanceTeam(this)">- Menunggu -</div><div class="team" data-round="1" data-match="0" data-slot="1" onclick="advanceTeam(this)">- Menunggu -</div></div>
+                <div class="match"><div class="team" data-round="1" data-match="1" data-slot="0" onclick="advanceTeam(this)">- Menunggu -</div><div class="team" data-round="1" data-match="1" data-slot="1" onclick="advanceTeam(this)">- Menunggu -</div></div>
+                <div class="match"><div class="team" data-round="1" data-match="2" data-slot="0" onclick="advanceTeam(this)">- Menunggu -</div><div class="team" data-round="1" data-match="2" data-slot="1" onclick="advanceTeam(this)">- Menunggu -</div></div>
+                <div class="match"><div class="team" data-round="1" data-match="3" data-slot="0" onclick="advanceTeam(this)">- Menunggu -</div><div class="team" data-round="1" data-match="3" data-slot="1" onclick="advanceTeam(this)">- Menunggu -</div></div>
+            </div>
+        </div>
+
+        <div class="round">
+            <div class="round-title">Semifinals</div>
+            <div class="matchups">
+                <div class="match"><div class="team" data-round="2" data-match="0" data-slot="0" onclick="advanceTeam(this)">- Menunggu -</div><div class="team" data-round="2" data-match="0" data-slot="1" onclick="advanceTeam(this)">- Menunggu -</div></div>
+                <div class="match"><div class="team" data-round="2" data-match="1" data-slot="0" onclick="advanceTeam(this)">- Menunggu -</div><div class="team" data-round="2" data-match="1" data-slot="1" onclick="advanceTeam(this)">- Menunggu -</div></div>
+            </div>
+        </div>
+
+        <div class="round">
+            <div class="round-title">Finals</div>
+            <div class="matchups">
+                <div class="match"><div class="team" data-round="3" data-match="0" data-slot="0" onclick="advanceTeam(this)">- Menunggu -</div><div class="team" data-round="3" data-match="0" data-slot="1" onclick="advanceTeam(this)">- Menunggu -</div></div>
+            </div>
+        </div>
+
+        <div class="round champion-box">
+            <div class="round-title">Champion</div>
+            <div class="trophy">🏆</div>
+            <div class="champion-name" id="champion">- JUARA -</div>
+        </div>
+
+    </div>
+
+    <script>
+        // Pembolehubah untuk tentukan adakah user ini Admin
+        let isAdmin = false;
+        
+        // Kata laluan admin (Boleh ditukar)
+        const adminPassword = "mlbb"; 
+
+        function toggleAdmin() {
+            const btn = document.getElementById('adminBtn');
+            const statusText = document.getElementById('status-text');
+
+            if (isAdmin) {
+                // Log keluar Admin
+                isAdmin = false;
+                btn.innerText = "Login Admin";
+                btn.classList.remove('admin-mode-active');
+                statusText.innerText = "Status: Mod Penonton (Hanya boleh melihat)";
+                statusText.style.color = "#8a99ad";
+                alert("Anda telah log keluar. Kembali ke Mod Penonton.");
+            } else {
+                // Log masuk Admin
+                const inputPass = prompt("Sila masukkan kata laluan Admin:");
+                if (inputPass === adminPassword) {
+                    isAdmin = true;
+                    btn.innerText = "Log Keluar (Admin Aktif)";
+                    btn.classList.add('admin-mode-active');
+                    statusText.innerText = "Status: MOD ADMIN AKTIF (Boleh ubah keputusan)";
+                    statusText.style.color = "#e74c3c";
+                    alert("Berjaya log masuk! Anda kini boleh klik untuk memilih pemenang.");
+                } else if (inputPass !== null) {
+                    alert("Kata laluan salah!");
+                }
+            }
+        }
+
+        function advanceTeam(element) {
+            // --- KUNCI UTAMA ADMIN ---
+            // Jika bukan admin, sekat fungsi klik
+            if (!isAdmin) {
+                alert("Maaf, hanya ADMIN sahaja yang boleh mengemaskini keputusan perlawanan.");
+                return;
+            }
+            // --------------------------
+
+            const currentRound = parseInt(element.getAttribute('data-round'));
+            const currentMatch = parseInt(element.getAttribute('data-match'));
+            const currentSlot = parseInt(element.getAttribute('data-slot'));
+            const teamName = element.innerText;
+
+            if (teamName.includes("- Menunggu -") || teamName.includes("- JUARA -")) return;
+
+            const parentMatch = element.parentElement;
+            const teamsInMatch = parentMatch.querySelectorAll('.team');
+
+            teamsInMatch.forEach(t => {
+                t.classList.remove('winner', 'loser');
+                if (t === element) {
+                    t.classList.add('winner');
+                } else {
+                    t.classList.add('loser');
+                }
+            });
+
+            const nextRound = currentRound + 1;
+            const nextMatch = Math.floor(currentMatch / 2);
+            const nextSlot = currentMatch % 2;
+
+            if (currentRound === 3) {
+                document.getElementById('champion').innerText = teamName;
+            } else {
+                const nextTeamElement = document.querySelector(`[data-round="${nextRound}"][data-match="${nextMatch}"][data-slot="${nextSlot}"]`);
+                if (nextTeamElement) {
+                    nextTeamElement.innerText = teamName;
+                    resetFutureRounds(nextRound, nextMatch, nextSlot);
+                }
+            }
+        }
+
+        function resetFutureRounds(round, match, slot) {
+            let r = round;
+            let m = match;
+            let s = slot;
+
+            while (r < 3) {
+                let nextR = r + 1;
+                let nextM = Math.floor(m / 2);
+                let nextS = m % 2;
+
+                let nextElem = document.querySelector(`[data-round="${nextR}"][data-match="${nextM}"][data-slot="${nextS}"]`);
+                if (nextElem) {
+                    nextElem.innerText = "- Menunggu -";
+                    nextElem.classList.remove('winner', 'loser');
+                }
+                
+                r = nextR;
+                m = nextM;
+                s = nextS;
+            }
+            document.getElementById('champion').innerText = "- JUARA -";
+        }
+    </script>
+</body>
+</html>
