@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TUFAH MLBB CHALLENGE BRACKET</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0b0e14;
+            color: #ffffff;
+            padding: 40px 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: #f3a91b;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(243, 169, 27, 0.5);
+        }
+
+        p.subtitle {
+            color: #8a99ad;
+            margin-bottom: 40px;
+            font-size: 14px;
+        }
+
+        /* Bracket Container Layout */
+        .bracket-container {
+            display: flex;
+            gap: 40px;
+            overflow-x: auto;
+            padding: 20px;
+            width: 100%;
+            max-width: 1400px;
+            justify-content: flex-start;
+        }
+
+        .round {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            min-width: 220px;
+        }
+
+        .round-title {
+            text-align: center;
+            color: #f3a91b;
+            font-weight: bold;
+            font-size: 14px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+            border-bottom: 2px solid #1f293d;
+            padding-bottom: 5px;
+        }
+
+        .matchups {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            height: 100%;
+            justify-content: space-around;
+        }
+
+        /* Match Card Styling */
+        .match {
+            background-color: #131926;
+            border: 1px solid #233048;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+        }
+
+        .match:hover {
+            border-color: #f3a91b;
+            box-shadow: 0 4px 15px rgba(243, 169, 27, 0.2);
+        }
+
+        .team {
+            padding: 12px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.2s;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .team:hover {
+            background-color: #1f293d;
+        }
+
+        .team:first-child {
+            border-bottom: 1px solid #1f293d;
+        }
+
+        .team.winner {
+            color: #00ff88;
+            background-color: rgba(0, 255, 136, 0.05);
+            font-weight: bold;
+        }
+
+        .team.loser {
+            color: #63758a;
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+
+        /* Champion Section */
+        .champion-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .trophy {
+            font-size: 50px;
+            margin-bottom: 10px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .champion-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ffd700;
+            padding: 10px 20px;
+            border: 2px dashed #ffd700;
+            border-radius: 8px;
+            background: rgba(255, 215, 0, 0.05);
+            min-width: 180px;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>TUFAH MLBB CHALLENGE</h1>
+
+    <div class="bracket-container">
+        
+        <!-- ROUND OF 16 -->
+        <div class="round">
+            <div class="round-title">Round of 16</div>
+            <div class="matchups">
+                <!-- Match 1 -->
+                <div class="match">
+                    <div class="team" data-round="0" data-match="0" data-slot="0" onclick="advanceTeam(this)">Black Wave</div>
+                    <div class="team" data-round="0" data-match="0" data-slot="1" onclick="advanceTeam(this)">Loser Gang Final Boss</div>
+                </div>
+                <!-- Match 2 -->
+                <div class="match">
+                    <div class="team" data-round="0" data-match="1" data-slot="0" onclick="advanceTeam(this)">Dark System</div>
+                    <div class="team" data-round="0" data-match="1" data-slot="1" onclick="advanceTeam(this)">The Pounders</div>
+                </div>
+                <!-- Match 3 -->
+                <div class="match">
+                    <div class="team" data-round="0" data-match="2" data-slot="0" onclick="advanceTeam(this)">Hafiz</div>
+                    <div class="team" data-round="0" data-match="2" data-slot="1" onclick="advanceTeam(this)">Beast Supra Crew</div>
+                </div>
+                <!-- Match 4 -->
+                <div class="match">
+                    <div class="team" data-round="0" data-match="3" data-slot="0" onclick="advanceTeam(this)">Six Seven</div>
+                    <div class="team" data-round="0" data-match="3" data-slot="1" onclick="advanceTeam(this)">Nighertron</div>
+                </div>
+                <!-- Match 5 -->
+                <div class="match">
+                    <div class="team" data-round="0" data-match="4" data-slot="0" onclick="advanceTeam(this)">Fnatic OG</div>
+                    <div class="team" data-round="0" data-match="4" data-slot="1" onclick="advanceTeam(this)">Super Curry</div>
+                </div>
+                <!-- Match 6 -->
+                <div class="match">
+                    <div class="team" data-round="0" data-match="5" data-slot="0" onclick="advanceTeam(this)">Ilmu Harian</div>
+                    <div class="team" data-round="0" data-match="5" data-slot="1" onclick="advanceTeam(this)">Sibros</div>
+                </div>
+                <!-- Match 7 -->
+                <div class="match">
+                    <div class="team" data-round="0" data-match="6" data-slot="0" onclick="advanceTeam(this)">Big Alpha Wolf</div>
+                    <div class="team" data-round="0" data-match="6" data-slot="1" onclick="advanceTeam(this)">Royal Team</div>
+                </div>
+                <!-- Match 8 -->
+                <div class="match">
+                    <div class="team" data-round="0" data-match="7" data-slot="0" onclick="advanceTeam(this)">Siakap 5 Rasa</div>
+                    <div class="team" data-round="0" data-match="7" data-slot="1" onclick="advanceTeam(this)">Nova</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- QUARTERFINALS -->
+        <div class="round">
+            <div class="round-title">Quarterfinals</div>
+            <div class="matchups">
+                <div class="match">
+                    <div class="team" data-round="1" data-match="0" data-slot="0" onclick="advanceTeam(this)">- Menunggu -</div>
+                    <div class="team" data-round="1" data-match="0" data-slot="1" onclick="advanceTeam(this)">- Menunggu -</div>
+                </div>
+                <div class="match">
+                    <div class="team" data-round="1" data-match="1" data-slot="0" onclick="advanceTeam(this)">- Menunggu -</div>
+                    <div class="team" data-round="1" data-match="1" data-slot="1" onclick="advanceTeam(this)">- Menunggu -</div>
+                </div>
+                <div class="match">
+                    <div class="team" data-round="1" data-match="2" data-slot="0" onclick="advanceTeam(this)">- Menunggu -</div>
+                    <div class="team" data-round="1" data-match="2" data-slot="1" onclick="advanceTeam(this)">- Menunggu -</div>
+                </div>
+                <div class="match">
+                    <div class="team" data-round="1" data-match="3" data-slot="0" onclick="advanceTeam(this)">- Menunggu -</div>
+                    <div class="team" data-round="1" data-match="3" data-slot="1" onclick="advanceTeam(this)">- Menunggu -</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEMIFINALS -->
+        <div class="round">
+            <div class="round-title">Semifinals</div>
+            <div class="matchups">
+                <div class="match">
+                    <div class="team" data-round="2" data-match="0" data-slot="0" onclick="advanceTeam(this)">- Menunggu -</div>
+                    <div class="team" data-round="2" data-match="0" data-slot="1" onclick="advanceTeam(this)">- Menunggu -</div>
+                </div>
+                <div class="match">
+                    <div class="team" data-round="2" data-match="1" data-slot="0" onclick="advanceTeam(this)">- Menunggu -</div>
+                    <div class="team" data-round="2" data-match="1" data-slot="1" onclick="advanceTeam(this)">- Menunggu -</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FINALS -->
+        <div class="round">
+            <div class="round-title">Finals</div>
+            <div class="matchups">
+                <div class="match">
+                    <div class="team" data-round="3" data-match="0" data-slot="0" onclick="advanceTeam(this)">- Menunggu -</div>
+                    <div class="team" data-round="3" data-match="0" data-slot="1" onclick="advanceTeam(this)">- Menunggu -</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CHAMPION -->
+        <div class="round champion-box">
+            <div class="round-title">Champion</div>
+            <div class="trophy">🏆</div>
+            <div class="champion-name" id="champion">- JUARA -</div>
+        </div>
+
+    </div>
+
+    <script>
+        function advanceTeam(element) {
+            const currentRound = parseInt(element.getAttribute('data-round'));
+            const currentMatch = parseInt(element.getAttribute('data-match'));
+            const currentSlot = parseInt(element.getAttribute('data-slot'));
+            const teamName = element.innerText;
+
+            // Jangan benarkan klik jika slot masih kosong ("- Menunggu -")
+            if (teamName.includes("- Menunggu -") || teamName.includes("- JUARA -")) return;
+
+            // Dapatkan semua elemen dalam perlawanan (match) yang sama
+            const parentMatch = element.parentElement;
+            const teamsInMatch = parentMatch.querySelectorAll('.team');
+
+            // Set visual siapa menang siapa kalah dalam perlawanan tersebut
+            teamsInMatch.forEach(t => {
+                t.classList.remove('winner', 'loser');
+                if (t === element) {
+                    t.classList.add('winner');
+                } else {
+                    t.classList.add('loser');
+                }
+            });
+
+            // Kira kedudukan untuk pusingan seterusnya
+            const nextRound = currentRound + 1;
+            const nextMatch = Math.floor(currentMatch / 2);
+            const nextSlot = currentMatch % 2;
+
+            if (currentRound === 3) {
+                // Jika menang di Finals (Round 3), hantar terus ke kotak Champion
+                document.getElementById('champion').innerText = teamName;
+            } else {
+                // Cari slot perlawanan di pusingan seterusnya dan masukkan nama pasukan
+                const nextTeamElement = document.querySelector(`[data-round="${nextRound}"][data-match="${nextMatch}"][data-slot="${nextSlot}"]`);
+                if (nextTeamElement) {
+                    nextTeamElement.innerText = teamName;
+                    
+                    // Reset status anak-anak buah di pusingan hadapan jika ada perubahan keputusan di pusingan awal
+                    resetFutureRounds(nextRound, nextMatch, nextSlot);
+                }
+            }
+        }
+
+        // Fungsi untuk reset perlawanan di hadapan kalau user tiba-tiba tukar pemenang di round awal
+        function resetFutureRounds(round, match, slot) {
+            let r = round;
+            let m = match;
+            let s = slot;
+
+            while (r < 3) {
+                let nextR = r + 1;
+                let nextM = Math.floor(m / 2);
+                let nextS = m % 2;
+
+                let nextElem = document.querySelector(`[data-round="${nextR}"][data-match="${nextM}"][data-slot="${nextS}"]`);
+                if (nextElem) {
+                    nextElem.innerText = "- Menunggu -";
+                    nextElem.classList.remove('winner', 'loser');
+                }
+                
+                r = nextR;
+                m = nextM;
+                s = nextS;
+            }
+            // Reset champion juga jika ada perubahan
+            document.getElementById('champion').innerText = "- JUARA -";
+        }
+    </script>
+</body>
+</html>
